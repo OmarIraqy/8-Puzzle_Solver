@@ -1,3 +1,4 @@
+import time
 import tkinter as tk
 from collections import deque
 from heapq import heapify, heappush, heappop
@@ -106,19 +107,29 @@ class Game:
             for j in range(3):
                 self.cell_var[i][j].set(state[i][j])
     def run_algorithm(self, algorithm):
+        start = 0
+        end = 0
         if algorithm == 1:
+            start = time.time()
             self.solution_path = self.bfs(self.random_initial_state, self.goal_state)
+            end = time.time()
             self.root.title("8-Puzzle Solver BFS")
         elif algorithm == 2:
+            start = time.time()
             self.solution_path = self.dfs(self.random_initial_state, self.goal_state)
+            end = time.time()
             self.root.title("8-Puzzle Solver DFS")
         elif algorithm == 3:
+            start = time.time()
             self.solution_path = self.A_star(self.random_initial_state, self.goal_state, cost=1)
+            end = time.time()
             self.root.title("8-Puzzle Solver A* Manhattan")
         elif algorithm == 4:
+            start = time.time()
             self.solution_path = self.A_star(self.random_initial_state, self.goal_state, cost=2)
+            end = time.time()
             self.root.title("8-Puzzle Solver A* Euclidean")
-
+        print("Time Taken by Algorithm = "+str(end-start))
         self.update_gui_with_solution_path()
 
     def bfs(self, initial_state, goal_state):
@@ -132,9 +143,9 @@ class Game:
             current_node = queue.popleft()
 
             if current_node == goal_node:
-                print("Amount of nodes visited = " + str(len(visited)))
+                print("Amount of nodes visited by BFS = " + str(len(visited)))
                 path = self.get_path(current_node)
-                print("Amount of nodes in Path = " + str(len(path)))
+                print("Amount of nodes in Path by Bfs = " + str(len(path)))
                 return path
 
             if current_node not in visited:
@@ -164,9 +175,10 @@ class Game:
             current_node = heappop(heap)
 
             if current_node == goal_node:
-                print("Amount of nodes visited = " + str(len(visited)))
+                print("Amount of nodes visited by A* = " + str(len(visited)))
                 path = self.get_path(current_node)
-                print("Amount of nodes in Path = " + str(len(path)))
+                print("Amount of nodes in Path by A* = " + str(len(path)))
+                print("Cost by A* = " + str(current_node.cost))
                 return path
 
             if current_node not in visited:
@@ -235,5 +247,5 @@ class Game:
             self.root.after(1000, self.update_gui_with_solution_path)
 
 # Example usage with a random initial state
-random_initial_state = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
+random_initial_state = [[1,2,3],[4,5,6],[7,8,0]]
 game = Game(random_initial_state)
