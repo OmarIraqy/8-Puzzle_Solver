@@ -4,14 +4,15 @@ from heapq import heapify, heappush, heappop
 import math
 
 class PuzzleState:
-    def __init__(self, state, parent=None, action=None, cost=0):
+    def __init__(self, state, parent=None, action=None, costType=0):
         self.state = state
         self.parent = parent
         self.action = action
-        if cost == 1:
-            self.cost = self.get_manhattan_distance(self.state)
-        elif cost == 2:
-            self.cost = self.get_euclidean_distance(self.state)
+        self.costType = costType
+        if costType == 1:
+            self.cost = self.get_manhattan_distance(self.state) + parent.cost if parent else self.get_manhattan_distance(self.state)
+        elif costType == 2:
+            self.cost = self.get_euclidean_distance(self.state) + parent.cost if parent else self.get_euclidean_distance(self.state)
 
     def __eq__(self, other):
         return self.state == other.state
@@ -45,6 +46,15 @@ class PuzzleState:
                 goal_row, goal_col = divmod(tile , 3)
                 cost += abs(i - goal_row) + abs(j - goal_col)
         return cost
+
+    def decreaseKey(self,node):
+        if self.costType == 1:
+            self.cost = self.get_manhattan_distance(self.state) + node.cost
+        elif self.costType == 2:
+            self.cost = self.get_euclidean_distance(self.state) + node.cost
+
+        self.parent = node
+
 
 class Game:
     def __init__(self, initial_state):
@@ -86,8 +96,15 @@ class Game:
             self.root.grid_rowconfigure(i, weight=1)
             self.root.grid_columnconfigure(i, weight=1)
 
+        # Update GUI with initial state
+        self.update_gui_with_state(initial_state)
+
         self.root.mainloop()
 
+    def update_gui_with_state(self, state):
+        for i in range(3):
+            for j in range(3):
+                self.cell_var[i][j].set(state[i][j])
     def run_algorithm(self, algorithm):
         if algorithm == 1:
             self.solution_path = self.bfs(self.random_initial_state, self.goal_state)
@@ -136,8 +153,8 @@ class Game:
         return None
 
     def A_star(self, initial_state, goal_state, cost):
-        start_node = PuzzleState(initial_state, cost=cost)
-        goal_node = PuzzleState(goal_state, cost=cost)
+        start_node = PuzzleState(initial_state, costType=cost)
+        goal_node = PuzzleState(goal_state, costType=cost)
 
         heap = [start_node]
         heapify(heap)
@@ -157,9 +174,11 @@ class Game:
 
                 neighbors = self.get_neighbors(current_node.state)
                 for last_move, new_position, neighbor_state, move in neighbors:
-                    neighbor_node = PuzzleState(neighbor_state, current_node, move, cost=cost)
-                    if neighbor_node not in visited:
+                    neighbor_node = PuzzleState(neighbor_state, current_node, move, costType=cost)
+                    if neighbor_node not in visited and neighbor_node not in heap:
                         heappush(heap, neighbor_node)
+                    elif neighbor_node in heap:
+                        neighbor_node.decreaseKey(current_node)
 
         return None
 
