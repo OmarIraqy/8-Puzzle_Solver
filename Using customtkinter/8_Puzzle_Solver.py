@@ -69,7 +69,7 @@ class Game:
 
         for i in range(3):
             for j in range(3):
-                label = customtkinter.CTkLabel(master= self.root, textvariable=self.cell_var[i][j], width=10, height=5, font=("Helvetica", 16), fg_color="white")
+                label = customtkinter.CTkLabel(master= self.root, textvariable=self.cell_var[i][j], width=100, height=100, font=("Helvetica", 16), fg_color="white", corner_radius=10)
                 label.grid(row=i, column=j, padx=5, pady=5)
 
         self.initial_state_entry =customtkinter.CTkEntry(master=self.root, font=("Helvetica", 12))
@@ -80,22 +80,22 @@ class Game:
         submit_button.grid(row=4, columnspan=3, pady=10)
 
         self.arrow_label = customtkinter.CTkLabel(master=self.root, text="", font=("Arial", 20), fg_color="white", text_color="black")
-        self.arrow_label.grid(row=5, columnspan=3, pady=10, sticky='nsew')
+        self.arrow_label.grid(row=5, columnspan=3, pady=7, sticky='nsew')
 
-        bfs_button = customtkinter.CTkButton(master=self.root, text="BFS", command=lambda: self.run_algorithm(1), fg_color="gray",
-                               font=("Helvetica", 14))
+        bfs_button = customtkinter.CTkButton(master=self.root, text="BFS", command=lambda: self.run_algorithm(1), fg_color="dark blue",
+                               font=("Helvetica", 14), border_width=3)
         bfs_button.grid(row=6, column=0, padx=10, pady=10, sticky='nsew')
 
-        dfs_button = customtkinter.CTkButton(master= self.root, text="DFS", command=lambda: self.run_algorithm(2), fg_color="gray",
-                               font=("Helvetica", 14),)
+        dfs_button = customtkinter.CTkButton(master= self.root, text="DFS", command=lambda: self.run_algorithm(2), fg_color="dark blue",
+                               font=("Helvetica", 14),border_width=3)
         dfs_button.grid(row=6, column=1, padx=10, pady=10, sticky='nsew')
 
         a_star_manhattan_button = customtkinter.CTkButton(master=self.root, text="A* Manhattan", command=lambda: self.run_algorithm(3),
-                                            fg_color="gray", font=("Helvetica", 14))
+                                            fg_color="dark blue", font=("Helvetica", 14),border_width=3)
         a_star_manhattan_button.grid(row=6, column=2, padx=10, pady=10, sticky='nsew')
 
         a_star_euclidean_button = customtkinter.CTkButton(master=self.root, text="A* Euclidean", command=lambda: self.run_algorithm(4),
-                                            fg_color="gray", font=("Helvetica", 14))
+                                            fg_color="dark blue", font=("Helvetica", 14),border_width=3)
         a_star_euclidean_button.grid(row=6, column=3, padx=10, pady=10, sticky='nsew')
 
         for i in range(7):
