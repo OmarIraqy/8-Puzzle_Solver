@@ -69,7 +69,7 @@ class Game:
 
         for i in range(3):
             for j in range(3):
-                label = customtkinter.CTkLabel(master= self.root, textvariable=self.cell_var[i][j], width=100, height=100, font=("Helvetica", 16), fg_color="white", corner_radius=10)
+                label = customtkinter.CTkLabel(master= self.root, textvariable=self.cell_var[i][j], width=150, height=100, font=("Helvetica", 16), fg_color="#90d0f5", corner_radius=10)
                 label.grid(row=i, column=j, padx=5, pady=5)
 
         self.initial_state_entry =customtkinter.CTkEntry(master=self.root, font=("Helvetica", 12))
@@ -285,4 +285,5 @@ class Game:
             current_state, current_move = self.solution_path.pop(0)
             self.update_gui_with_arrow(current_state, current_move)
             self.root.after(1000, self.update_gui_with_solution_path)
+
 game = Game()
