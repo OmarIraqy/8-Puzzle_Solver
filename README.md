@@ -16,4 +16,5 @@ It is the distance between the current cell and the goal cell using the distance
 h = sqrt((current cell:x - goal:x)2 + (current cell.y - goal:y)2)
 
 ## 3 Report
+[8-Puzzle Report.pdf](https://github.com/OmarIraqy/8-Puzzle_Solver/files/14729354/8-Puzzle.Report.pdf)
 
